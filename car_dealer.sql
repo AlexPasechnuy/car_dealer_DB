@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 19 2020 г., 15:47
+-- Время создания: Апр 22 2020 г., 20:08
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.4.2
 
@@ -40,7 +40,7 @@ CREATE TABLE `car` (
   `start_stop` bit(1) NOT NULL,
   `bluetooth` bit(1) NOT NULL,
   `gps` bit(1) NOT NULL,
-  `ligts_type` enum('halogen','xenon','LED') NOT NULL,
+  `lights_type` enum('halogen','xenon','LED') NOT NULL,
   `steer_wheel_heat` bit(1) NOT NULL,
   `seats_heat` bit(1) NOT NULL,
   `abs` bit(1) NOT NULL,
@@ -82,50 +82,51 @@ CREATE TABLE `car_model` (
   `length` int(11) NOT NULL,
   `width` int(11) NOT NULL,
   `height` int(11) NOT NULL,
-  `weight` int(11) NOT NULL
+  `weight` int(11) NOT NULL,
+  `car_model_info` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `car_model`
 --
 
-INSERT INTO `car_model` (`car_model_id`, `car_make_id`, `car_model_name`, `length`, `width`, `height`, `weight`) VALUES
-(1, 1, 'Kuga', 4542, 1838, 1685, 1586),
-(2, 1, 'Focus', 4378, 1825, 1454, 1364),
-(3, 1, 'Fiesta', 4040, 1734, 1483, 1232),
-(4, 1, 'EcoSport', 4096, 1765, 1645, 1263),
-(5, 1, 'Mustang', 4784, 1916, 1381, 1655),
-(6, 1, 'Edge', 4778, 1928, 1742, 1774),
-(7, 1, 'Mondeo', 4871, 1852, 1482, 1394),
-(8, 1, 'Ranger', 5362, 1860, 1815, 2014),
-(9, 2, '1 series', 4319, 1799, 1434, 1430),
-(10, 2, '2 series', 4432, 1774, 1418, 1380),
-(11, 2, '3 series', 4709, 1827, 1442, 1450),
-(12, 2, '4 series', 4640, 1825, 1377, 1425),
-(13, 2, '5 series', 4936, 1868, 1479, 1560),
-(14, 2, '6 series', 4894, 1894, 1369, 1660),
-(15, 2, '7 series', 5260, 1902, 1479, 2085),
-(16, 2, '8 series', 4843, 1902, 1341, 1785),
-(17, 2, 'X1', 4447, 1821, 1598, 1515),
-(18, 2, 'X2', 4360, 1824, 1526, 1535),
-(19, 2, 'X3', 4708, 1891, 1676, 1820),
-(20, 2, 'X4', 4752, 1918, 1621, 1755),
-(21, 2, 'X5', 4922, 2004, 1745, 2060),
-(22, 2, 'X6', 4935, 2004, 1696, 2260),
-(23, 2, 'X7', 5151, 2000, 1805, 2320),
-(24, 3, 'Aveo', 4039, 1735, 1517, 1035),
-(25, 3, 'Spark', 3635, 1595, 1483, 1019),
-(26, 3, 'Bolt', 4166, 1765, 1595, 1616),
-(27, 3, 'Cruze', 4666, 1791, 1458, 1324),
-(28, 3, 'Malibu', 4933, 1854, 1455, 1422),
-(29, 3, 'Camaro', 4783, 1897, 1349, 1520),
-(30, 3, 'Trax', 4257, 1775, 1676, 1380),
-(31, 4, 'Mazda3', 4460, 1795, 1435, 1324),
-(32, 4, 'Mazda6', 4870, 1840, 1450, 1487),
-(33, 4, 'CX-3', 4275, 1765, 1535, 1250),
-(34, 4, 'CX-30', 4395, 1795, 1540, 1400),
-(35, 4, 'CX-5', 4550, 1925, 1675, 1512),
-(36, 4, 'CX-9', 5075, 1969, 1747, 1960);
+INSERT INTO `car_model` (`car_model_id`, `car_make_id`, `car_model_name`, `length`, `width`, `height`, `weight`, `car_model_info`) VALUES
+(1, 1, 'Kuga', 4542, 1838, 1685, 1586, NULL),
+(2, 1, 'Focus', 4378, 1825, 1454, 1364, 'Catalog: https://fordcms.blob.core.windows.net/media/Ukraine/%D0%86%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D1%96%D1%8F/FOCUS_19MY_V2_EDM_UKR_UA_EBRO_DP.pdf\nPrice-list: https://fordcms.blob.core.windows.net/media/Ukraine/Price%206.04/FOCUS%20NEW_2019%20%D1%80%D1%96%D0%BA%20%D0%B2%D0%B8%D1%80%D0%BE%D0%B1%D0%BD%D0%B8%D1%86%D1%82%D0%B2%D0%B0%20(%D0%B4%D0%BE%2020.10.2019%20%D0%B2%D0%B8%D1%80%D0%BE%D0%B1%D0%BD%D0%B8%D1%86%D1%82%D0%B2%D0%BE)-1.pdf'),
+(3, 1, 'Fiesta', 4040, 1734, 1483, 1232, 'Catalog: https://fordcms.blob.core.windows.net/media/Ukraine/%D0%86%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D1%96%D1%8F/Fiesta_2019MY_EDM_UKR_eBrochure.pdf'),
+(4, 1, 'EcoSport', 4096, 1765, 1645, 1263, NULL),
+(5, 1, 'Mustang', 4784, 1916, 1381, 1655, NULL),
+(6, 1, 'Edge', 4778, 1928, 1742, 1774, NULL),
+(7, 1, 'Mondeo', 4871, 1852, 1482, 1394, 'Catalog: https://fordcms.blob.core.windows.net/media/Ukraine/%D0%86%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D1%96%D1%8F/Mondeo_19.5MY_UKR_eBrochure.pdf\nPrice-list: https://fordcms.blob.core.windows.net/media/Ukraine/Price%20scecial%20offer/MONDEO%20NEW_2019%20%D1%80%D1%96%D0%BA%20%D0%B2%D0%B8%D1%80%D0%BE%D0%B1%D0%BD%D0%B8%D1%86%D1%82%D0%B2%D0%B0.pdf'),
+(8, 1, 'Ranger', 5362, 1860, 1815, 2014, NULL),
+(9, 2, '1 series', 4319, 1799, 1434, 1430, NULL),
+(10, 2, '2 series', 4432, 1774, 1418, 1380, NULL),
+(11, 2, '3 series', 4709, 1827, 1442, 1450, NULL),
+(12, 2, '4 series', 4640, 1825, 1377, 1425, NULL),
+(13, 2, '5 series', 4936, 1868, 1479, 1560, NULL),
+(14, 2, '6 series', 4894, 1894, 1369, 1660, NULL),
+(15, 2, '7 series', 5260, 1902, 1479, 2085, NULL),
+(16, 2, '8 series', 4843, 1902, 1341, 1785, NULL),
+(17, 2, 'X1', 4447, 1821, 1598, 1515, NULL),
+(18, 2, 'X2', 4360, 1824, 1526, 1535, NULL),
+(19, 2, 'X3', 4708, 1891, 1676, 1820, NULL),
+(20, 2, 'X4', 4752, 1918, 1621, 1755, NULL),
+(21, 2, 'X5', 4922, 2004, 1745, 2060, NULL),
+(22, 2, 'X6', 4935, 2004, 1696, 2260, NULL),
+(23, 2, 'X7', 5151, 2000, 1805, 2320, NULL),
+(24, 3, 'Aveo', 4039, 1735, 1517, 1035, NULL),
+(25, 3, 'Spark', 3635, 1595, 1483, 1019, NULL),
+(26, 3, 'Bolt', 4166, 1765, 1595, 1616, NULL),
+(27, 3, 'Cruze', 4666, 1791, 1458, 1324, NULL),
+(28, 3, 'Malibu', 4933, 1854, 1455, 1422, NULL),
+(29, 3, 'Camaro', 4783, 1897, 1349, 1520, NULL),
+(30, 3, 'Trax', 4257, 1775, 1676, 1380, NULL),
+(31, 4, 'Mazda3', 4460, 1795, 1435, 1324, NULL),
+(32, 4, 'Mazda6', 4870, 1840, 1450, 1487, NULL),
+(33, 4, 'CX-3', 4275, 1765, 1535, 1250, NULL),
+(34, 4, 'CX-30', 4395, 1795, 1540, 1400, NULL),
+(35, 4, 'CX-5', 4550, 1925, 1675, 1512, NULL),
+(36, 4, 'CX-9', 5075, 1969, 1747, 1960, NULL);
 
 -- --------------------------------------------------------
 
@@ -154,8 +155,23 @@ CREATE TABLE `employee` (
   `position` enum('sales_manager','supply_manager','HR_manager','mechanic','admin') NOT NULL,
   `salary` int(11) NOT NULL,
   `birth_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `enroll_date` timestamp NOT NULL DEFAULT current_timestamp()
+  `enroll_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `employee`
+--
+
+INSERT INTO `employee` (`username`, `password`, `name`, `surname`, `position`, `salary`, `birth_date`, `enroll_date`, `phone`, `email`) VALUES
+('a_andreev', 'aj763if8', 'Alex', 'Andreev', 'admin', 1500, '2000-05-29 21:00:00', '2020-04-14 21:00:00', '+380687593159', 'alandr@gmail.com'),
+('n_durov', '15akpo85', 'Nazar', 'Durov', 'mechanic', 1100, '1982-04-15 21:00:00', '2016-07-14 21:00:00', '+380661782396', 'nazdur@gmail.com'),
+('n_shemenev', 'o48hj9q3', 'Nickolai', 'Shemenev', '', 1500, '1995-06-24 21:00:00', '2017-03-14 22:00:00', '+380687593167', 'nickshem@gmail.com'),
+('o_mironov', 'o48hj9q3', 'Oleg', 'Mironov', 'supply_manager', 2700, '1990-07-18 21:00:00', '2015-07-27 21:00:00', '+380509472036', 'mironov@gmail.com'),
+('s_kurkin', 'hd136yj7', 'Sergey', 'Kurkin', 'mechanic', 1250, '1970-11-12 22:00:00', '2017-11-24 22:00:00', '+380634775975', 'serkur@gmail.com'),
+('v_mihailov', 'sq26tj87', 'Viktor', 'Mihailov', '', 1300, '1985-10-22 21:00:00', '2018-08-16 21:00:00', '+380997348394', 'vikmih@gmail.com'),
+('v_nick', 'f97g531s', 'Vicktoriya', 'Nickolayeva', 'HR_manager', 2300, '1993-08-26 21:00:00', '2017-02-16 22:00:00', '+380504693145', 'vicknick@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -168,16 +184,26 @@ CREATE TABLE `equip_template` (
   `equip_name` varchar(15) DEFAULT NULL,
   `car_make_id` int(11) NOT NULL,
   `climat_type` enum('conditioner','climat_control') NOT NULL,
-  `start_stop` bit(1) NOT NULL,
-  `bluetooth` bit(1) NOT NULL,
-  `gps` bit(1) NOT NULL,
-  `ligts_type` enum('halogen','xenon','LED') NOT NULL,
-  `steer_wheel_heat` bit(1) NOT NULL,
-  `seats_heat` bit(1) NOT NULL,
-  `abs` bit(1) NOT NULL,
-  `esp` bit(1) NOT NULL,
-  `car_info` text DEFAULT NULL
+  `start_stop` tinyint(4) NOT NULL,
+  `bluetooth` tinyint(4) NOT NULL,
+  `gps` tinyint(4) NOT NULL,
+  `lights_type` enum('halogen','xenon','LED') NOT NULL,
+  `steer_wheel_heat` tinyint(4) NOT NULL,
+  `seats_heat` tinyint(4) NOT NULL,
+  `abs` tinyint(4) NOT NULL,
+  `esp` tinyint(4) NOT NULL,
+  `equip_temp_info` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `equip_template`
+--
+
+INSERT INTO `equip_template` (`equip_id`, `equip_name`, `car_make_id`, `climat_type`, `start_stop`, `bluetooth`, `gps`, `lights_type`, `steer_wheel_heat`, `seats_heat`, `abs`, `esp`, `equip_temp_info`) VALUES
+(1, 'Trend', 1, 'conditioner', 0, 1, 0, 'halogen', 0, 0, 1, 1, 'SYNC 2 audio system'),
+(2, 'Titanium', 1, 'climat_control', 1, 1, 0, 'halogen', 0, 1, 1, 1, '16\' wheels, SYNC 3 audio system'),
+(3, 'Vignale', 1, 'climat_control', 1, 1, 1, 'xenon', 1, 1, 1, 1, 'B&O PLAY audio system, leather saloon'),
+(4, 'ST-Line', 1, 'climat_control', 1, 1, 1, 'LED', 1, 1, 1, 1, 'Aerodynamic body kit, sport seats');
 
 -- --------------------------------------------------------
 
@@ -191,6 +217,24 @@ CREATE TABLE `factory` (
   `city` varchar(20) NOT NULL,
   `car_make_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `factory`
+--
+
+INSERT INTO `factory` (`factory_id`, `country`, `city`, `car_make_id`) VALUES
+(1, 'Germany', 'Cologne', 1),
+(2, 'Germany', 'Rheine', 1),
+(3, 'Belarus', 'Abchak', 1),
+(4, 'Spain', 'Almussafes', 1),
+(5, 'Romania', 'Craiova', 1),
+(6, 'Great Britain', 'London', 1),
+(7, 'Italy', 'Rome', 1),
+(8, 'Germany', 'Munich', 2),
+(9, 'Germany', 'Dingolfing', 2),
+(10, 'Germany', 'Landshut', 2),
+(11, 'Germany', 'Landshut', 2),
+(12, 'Belgium', 'Vilvoorde', 4);
 
 -- --------------------------------------------------------
 
@@ -345,13 +389,13 @@ ALTER TABLE `delivery_lot`
 -- AUTO_INCREMENT для таблицы `equip_template`
 --
 ALTER TABLE `equip_template`
-  MODIFY `equip_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `equip_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `factory`
 --
 ALTER TABLE `factory`
-  MODIFY `factory_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `factory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT для таблицы `repair_order`
