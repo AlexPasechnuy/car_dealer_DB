@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Апр 22 2020 г., 20:08
+-- Время создания: Май 07 2020 г., 15:06
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.4.2
 
@@ -22,6 +22,27 @@ SET time_zone = "+00:00";
 -- База данных: `car_dealer`
 --
 
+DELIMITER $$
+--
+-- Процедуры
+--
+CREATE DEFINER=`root`@`localhost` PROCEDURE `set_equip` (IN `car_id` INT, IN `eq_id` INT)  BEGIN
+UPDATE car SET climat_type = (SELECT climat_type FROM equip_template WHERE equip_id  = eq_id),
+equip_id = eq_id,
+climat_type = (SELECT climat_type FROM equip_template WHERE equip_id  = eq_id),
+start_stop = (SELECT start_stop FROM equip_template WHERE equip_id  = eq_id),
+bluetooth = (SELECT bluetooth FROM equip_template WHERE equip_id  = eq_id),
+gps = (SELECT gps FROM equip_template WHERE equip_id  = eq_id),
+lights_type = (SELECT lights_type FROM equip_template WHERE equip_id  = eq_id),
+steer_wheel_heat = (SELECT steer_wheel_heat FROM equip_template WHERE equip_id  = eq_id),
+seats_heat = (SELECT seats_heat FROM equip_template WHERE equip_id  = eq_id),
+abs = (SELECT abs FROM equip_template WHERE equip_id  = eq_id),
+esp = (SELECT esp FROM equip_template WHERE equip_id  = eq_id)
+WHERE VIN = car_id;
+END$$
+
+DELIMITER ;
+
 -- --------------------------------------------------------
 
 --
@@ -29,24 +50,55 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `car` (
-  `vin` int(11) NOT NULL,
+  `vin` bigint(11) NOT NULL,
   `del_lot_id` int(11) NOT NULL,
+  `equip_id` int(11) DEFAULT NULL,
   `car_model_id` int(11) NOT NULL,
-  `engine_vol` decimal(10,0) NOT NULL,
+  `engine_vol` decimal(10,0) DEFAULT NULL,
   `engine_power` int(11) NOT NULL,
-  `mixed_fuel_consumption` decimal(10,0) NOT NULL,
+  `mixed_fuel_consumption` decimal(10,0) DEFAULT NULL,
   `transmission_type` enum('mechanic','automatic') NOT NULL,
-  `climat_type` enum('conditioner','climat_control') NOT NULL,
-  `start_stop` bit(1) NOT NULL,
-  `bluetooth` bit(1) NOT NULL,
-  `gps` bit(1) NOT NULL,
-  `lights_type` enum('halogen','xenon','LED') NOT NULL,
-  `steer_wheel_heat` bit(1) NOT NULL,
-  `seats_heat` bit(1) NOT NULL,
-  `abs` bit(1) NOT NULL,
-  `esp` bit(1) NOT NULL,
-  `car_info` text DEFAULT NULL
+  `climat_type` enum('conditioner','climat_control') DEFAULT NULL,
+  `start_stop` bit(1) NOT NULL DEFAULT b'0',
+  `bluetooth` bit(1) NOT NULL DEFAULT b'0',
+  `gps` bit(1) NOT NULL DEFAULT b'0',
+  `lights_type` enum('halogen','xenon','LED') NOT NULL DEFAULT 'halogen',
+  `steer_wheel_heat` bit(1) NOT NULL DEFAULT b'0',
+  `seats_heat` bit(1) NOT NULL DEFAULT b'0',
+  `abs` bit(1) NOT NULL DEFAULT b'0',
+  `esp` bit(1) NOT NULL DEFAULT b'0',
+  `price` int(11) DEFAULT NULL,
+  `car_info` text DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `car`
+--
+
+INSERT INTO `car` (`vin`, `del_lot_id`, `equip_id`, `car_model_id`, `engine_vol`, `engine_power`, `mixed_fuel_consumption`, `transmission_type`, `climat_type`, `start_stop`, `bluetooth`, `gps`, `lights_type`, `steer_wheel_heat`, `seats_heat`, `abs`, `esp`, `price`, `car_info`) VALUES
+(1417139852, 1, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, ''),
+(1417139952, 1, 1, 4, '1', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 17250, ''),
+(1417817985, 1, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
+(1417862198, 1, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
+(1417865139, 1, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, ''),
+(1417865140, 1, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
+(1417867591, 1, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
+(1417869436, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
+(1417869437, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
+(4657139852, 2, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, ''),
+(4657817985, 2, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
+(4657862197, 2, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
+(4657865140, 2, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
+(4657867591, 2, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
+(4657869436, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
+(4657869437, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
+(9877817985, 3, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
+(9877862197, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
+(9877862198, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
+(9877865139, 3, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, ''),
+(9877865140, 3, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
+(9877867591, 3, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
+(9877869436, 3, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '');
 
 -- --------------------------------------------------------
 
@@ -136,10 +188,19 @@ INSERT INTO `car_model` (`car_model_id`, `car_make_id`, `car_model_name`, `lengt
 
 CREATE TABLE `delivery_lot` (
   `del_lot_id` int(11) NOT NULL,
-  `arrival_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `status` enum('waiting','on the way','delivered') NOT NULL,
+  `expected_arrival_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` enum('waiting for delivery','on the way','delivered') NOT NULL,
   `factory_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `delivery_lot`
+--
+
+INSERT INTO `delivery_lot` (`del_lot_id`, `expected_arrival_date`, `status`, `factory_id`) VALUES
+(1, '2020-05-14 21:00:00', 'delivered', 3),
+(2, '2020-06-04 21:00:00', 'on the way', 4),
+(3, '2020-06-24 21:00:00', 'waiting for delivery', 7);
 
 -- --------------------------------------------------------
 
@@ -261,7 +322,7 @@ CREATE TABLE `repair_order` (
 
 CREATE TABLE `repair_report` (
   `repair_id` int(11) NOT NULL,
-  `vin` int(11) NOT NULL,
+  `vin` bigint(11) NOT NULL,
   `repair_date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `employee_username` varchar(15) NOT NULL,
   `repair_info` text DEFAULT NULL
@@ -275,7 +336,7 @@ CREATE TABLE `repair_report` (
 
 CREATE TABLE `sell_order` (
   `sell_order_id` int(11) NOT NULL,
-  `vin` int(11) NOT NULL,
+  `vin` bigint(11) NOT NULL,
   `client_name` varchar(15) NOT NULL,
   `client_surname` varchar(15) NOT NULL,
   `client_phone` varchar(15) NOT NULL,
@@ -292,6 +353,7 @@ CREATE TABLE `sell_order` (
 --
 ALTER TABLE `car`
   ADD PRIMARY KEY (`vin`),
+  ADD KEY `equip_id` (`equip_id`),
   ADD KEY `del_lot_id` (`del_lot_id`),
   ADD KEY `car_model_id` (`car_model_id`);
 
@@ -362,12 +424,6 @@ ALTER TABLE `sell_order`
 --
 
 --
--- AUTO_INCREMENT для таблицы `car`
---
-ALTER TABLE `car`
-  MODIFY `vin` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT для таблицы `car_make`
 --
 ALTER TABLE `car_make`
@@ -383,7 +439,7 @@ ALTER TABLE `car_model`
 -- AUTO_INCREMENT для таблицы `delivery_lot`
 --
 ALTER TABLE `delivery_lot`
-  MODIFY `del_lot_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `del_lot_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT для таблицы `equip_template`
@@ -423,8 +479,9 @@ ALTER TABLE `sell_order`
 -- Ограничения внешнего ключа таблицы `car`
 --
 ALTER TABLE `car`
-  ADD CONSTRAINT `car_ibfk_1` FOREIGN KEY (`del_lot_id`) REFERENCES `delivery_lot` (`del_lot_id`),
-  ADD CONSTRAINT `car_ibfk_2` FOREIGN KEY (`car_model_id`) REFERENCES `car_model` (`car_model_id`);
+  ADD CONSTRAINT `car_ibfk_1` FOREIGN KEY (`equip_id`) REFERENCES `equip_template` (`equip_id`),
+  ADD CONSTRAINT `car_ibfk_2` FOREIGN KEY (`del_lot_id`) REFERENCES `delivery_lot` (`del_lot_id`),
+  ADD CONSTRAINT `car_ibfk_3` FOREIGN KEY (`car_model_id`) REFERENCES `car_model` (`car_model_id`);
 
 --
 -- Ограничения внешнего ключа таблицы `car_model`
