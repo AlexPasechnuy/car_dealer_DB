@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 19 2020 г., 15:40
+-- Время создания: Май 19 2020 г., 21:02
 -- Версия сервера: 10.4.11-MariaDB
 -- Версия PHP: 7.4.5
 
@@ -385,7 +385,87 @@ INSERT INTO `repair_order` (`repair_order_id`, `time`, `client_name`, `client_su
 (10, '2020-05-19 09:30:00', 'Vasya', 'Pupkin', '+380664894127', 'n_durov', 'Problems', 6),
 (11, '0000-00-00 00:00:00', 'Added', 'Report', '+380649436712', 'n_durov', 'Order added from app', 5),
 (12, '0000-00-00 00:00:00', 'Second', 'Added', '+380852314965', 'n_durov', 'Second added from app', 2),
-(13, '2020-05-23 05:30:00', 'Third', 'Added', '+380649436712', 'n_durov', 'Third added in the app', 1);
+(13, '2020-05-23 05:30:00', 'Third', 'Added', '+380649436712', 'n_durov', 'Third added in the app', 1),
+(14, '2020-05-20 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(15, '2020-05-20 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(16, '2020-05-20 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(17, '2020-05-20 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(18, '2020-05-20 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(19, '2020-05-20 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(20, '2020-05-20 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(21, '2020-05-20 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(22, '2020-05-21 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(23, '2020-05-21 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(24, '2020-05-21 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(25, '2020-05-21 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(26, '2020-05-21 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(27, '2020-05-21 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(28, '2020-05-21 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(29, '2020-05-21 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(30, '2020-05-22 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(31, '2020-05-22 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(32, '2020-05-22 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(33, '2020-05-22 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(34, '2020-05-22 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(35, '2020-05-22 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(36, '2020-05-22 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(37, '2020-05-22 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(38, '2020-05-23 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(39, '2020-05-23 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(40, '2020-05-23 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(41, '2020-05-23 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(42, '2020-05-23 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(43, '2020-05-23 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(44, '2020-05-23 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(45, '2020-05-23 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(46, '2020-05-24 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(47, '2020-05-24 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(48, '2020-05-24 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(49, '2020-05-24 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(50, '2020-05-24 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(51, '2020-05-24 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(52, '2020-05-24 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(53, '2020-05-24 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(54, '2020-05-25 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(55, '2020-05-25 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(56, '2020-05-25 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(57, '2020-05-25 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(58, '2020-05-25 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(59, '2020-05-25 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(60, '2020-05-25 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(61, '2020-05-25 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(62, '2020-05-26 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(63, '2020-05-26 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(64, '2020-05-26 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(65, '2020-05-26 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(66, '2020-05-26 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(67, '2020-05-26 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(68, '2020-05-26 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(69, '2020-05-26 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(70, '2020-05-27 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(71, '2020-05-27 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(72, '2020-05-27 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(73, '2020-05-27 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(74, '2020-05-27 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(75, '2020-05-27 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(76, '2020-05-27 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(77, '2020-05-27 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(78, '2020-05-28 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(79, '2020-05-28 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(80, '2020-05-28 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(81, '2020-05-28 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(82, '2020-05-28 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(83, '2020-05-28 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(84, '2020-05-28 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(85, '2020-05-28 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7),
+(86, '2020-05-29 12:30:00', 'Alex', 'Alexov', '+380667531985', 'n_durov', 'Problems with engine sound', 3),
+(87, '2020-05-29 13:30:00', 'Viktor', 'Ulianov', '+380723531985', 'n_durov', 'Problems with sound system', 2),
+(88, '2020-05-29 14:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 'n_durov', 'No problems with engine sound', 5),
+(89, '2020-05-29 15:00:00', 'Sasha', 'Beliy', '+380676331985', 'n_durov', 'Car is not shoot-resist', 7),
+(90, '2020-05-29 11:30:00', 'Alex', 'Alexov', '+380667531985', 's_kurkin', 'Problems with engine sound', 3),
+(91, '2020-05-29 12:30:00', 'Viktor', 'Ulianov', '+380723531985', 's_kurkin', 'Problems with sound system', 2),
+(92, '2020-05-29 13:30:00', 'Dmitriy', 'Shtorkin', '+380676331985', 's_kurkin', 'No problems with engine sound', 5),
+(93, '2020-05-29 14:00:00', 'Sasha', 'Beliy', '+380676331985', 's_kurkin', 'Car is not shoot-resist', 7);
 
 -- --------------------------------------------------------
 
@@ -643,7 +723,7 @@ ALTER TABLE `factory`
 -- AUTO_INCREMENT для таблицы `repair_order`
 --
 ALTER TABLE `repair_order`
-  MODIFY `repair_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `repair_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
 
 --
 -- AUTO_INCREMENT для таблицы `repair_report`
