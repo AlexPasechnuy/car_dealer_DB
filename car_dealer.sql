@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Май 07 2020 г., 15:06
+-- Время создания: Май 19 2020 г., 15:40
 -- Версия сервера: 10.4.11-MariaDB
--- Версия PHP: 7.4.2
+-- Версия PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -26,6 +25,25 @@ DELIMITER $$
 --
 -- Процедуры
 --
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_report` (IN `rep_ord_id` INT, IN `myVIN` BIGINT, IN `myInfo` TEXT, IN `my_employee_username` VARCHAR(15))  BEGIN
+INSERT INTO repair_report(vin, repair_date, employee_username, repair_info)
+VALUES(myVIN, NOW(), my_employee_username, myInfo);
+
+DELETE FROM repair_order
+WHERE repair_order_id = rep_ord_id;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sell_car` (IN `sell_ord_id` INT)  BEGIN
+
+UPDATE car
+SET sold = 1
+WHERE vin IN (SELECT vin from sell_order WHERE sell_order_id = sell_ord_id);
+
+DELETE FROM sell_order
+WHERE sell_order_id = sell_ord_id;
+
+END$$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `set_equip` (IN `car_id` INT, IN `eq_id` INT)  BEGIN
 UPDATE car SET climat_type = (SELECT climat_type FROM equip_template WHERE equip_id  = eq_id),
 equip_id = eq_id,
@@ -68,37 +86,76 @@ CREATE TABLE `car` (
   `abs` bit(1) NOT NULL DEFAULT b'0',
   `esp` bit(1) NOT NULL DEFAULT b'0',
   `price` int(11) DEFAULT NULL,
-  `car_info` text DEFAULT ''
+  `car_info` text DEFAULT '',
+  `colour` varchar(20) NOT NULL,
+  `sold` bit(1) NOT NULL DEFAULT b'0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `car`
 --
 
-INSERT INTO `car` (`vin`, `del_lot_id`, `equip_id`, `car_model_id`, `engine_vol`, `engine_power`, `mixed_fuel_consumption`, `transmission_type`, `climat_type`, `start_stop`, `bluetooth`, `gps`, `lights_type`, `steer_wheel_heat`, `seats_heat`, `abs`, `esp`, `price`, `car_info`) VALUES
-(1417139852, 1, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, ''),
-(1417139952, 1, 1, 4, '1', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 17250, ''),
-(1417817985, 1, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
-(1417862198, 1, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
-(1417865139, 1, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, ''),
-(1417865140, 1, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
-(1417867591, 1, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
-(1417869436, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
-(1417869437, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
-(4657139852, 2, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, ''),
-(4657817985, 2, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
-(4657862197, 2, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
-(4657865140, 2, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
-(4657867591, 2, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
-(4657869436, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
-(4657869437, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, ''),
-(9877817985, 3, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, ''),
-(9877862197, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
-(9877862198, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, ''),
-(9877865139, 3, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, ''),
-(9877865140, 3, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, ''),
-(9877867591, 3, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, ''),
-(9877869436, 3, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '');
+INSERT INTO `car` (`vin`, `del_lot_id`, `equip_id`, `car_model_id`, `engine_vol`, `engine_power`, `mixed_fuel_consumption`, `transmission_type`, `climat_type`, `start_stop`, `bluetooth`, `gps`, `lights_type`, `steer_wheel_heat`, `seats_heat`, `abs`, `esp`, `price`, `car_info`, `colour`, `sold`) VALUES
+(1417139852, 1, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, '', 'white', b'0'),
+(1417139952, 1, 1, 4, '1', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 17250, '', 'white', b'0'),
+(1417817985, 1, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, '', 'white', b'0'),
+(1417862198, 1, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, '', 'white', b'0'),
+(1417865139, 1, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, '', 'white', b'1'),
+(1417865140, 1, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, '', 'white', b'0'),
+(1417867591, 1, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, '', 'white', b'0'),
+(1417869436, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '', 'white', b'0'),
+(1417869437, 1, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '', 'white', b'0'),
+(4657139852, 2, NULL, 5, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 43000, '', 'white', b'0'),
+(4657817985, 2, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, '', 'white', b'0'),
+(4657862197, 2, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, '', 'white', b'0'),
+(4657865140, 2, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, '', 'white', b'0'),
+(4657867591, 2, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, '', 'white', b'0'),
+(4657869436, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '', 'white', b'0'),
+(4657869437, 2, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '', 'white', b'0'),
+(9877817985, 3, NULL, 6, '3', 250, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 50000, '', 'white', b'0'),
+(9877862197, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, '', 'white', b'0'),
+(9877862198, 3, NULL, 2, '2', 120, '7', 'automatic', 'conditioner', b'0', b'0', b'0', 'halogen', b'0', b'0', b'1', b'1', 15120, '', 'white', b'0'),
+(9877865139, 3, NULL, 7, '3', 230, '10', 'automatic', 'climat_control', b'1', b'1', b'1', 'LED', b'1', b'1', b'1', b'1', 45000, '', 'white', b'0'),
+(9877865140, 3, NULL, 7, '2', 150, '8', 'automatic', 'climat_control', b'1', b'1', b'1', 'xenon', b'0', b'1', b'1', b'1', 27000, '', 'white', b'0'),
+(9877867591, 3, NULL, 1, '2', 150, '8', 'mechanic', 'conditioner', b'1', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 20100, '', 'white', b'0'),
+(9877869436, 3, NULL, 3, '1', 100, '5', 'automatic', 'conditioner', b'0', b'1', b'0', 'halogen', b'0', b'0', b'1', b'1', 12300, '', 'white', b'0');
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `car_info`
+-- (См. Ниже фактическое представление)
+--
+CREATE TABLE `car_info` (
+`vin` bigint(11)
+,`del_lot_id` int(11)
+,`equip_id` int(11)
+,`car_model_id` int(11)
+,`engine_vol` decimal(10,0)
+,`engine_power` int(11)
+,`mixed_fuel_consumption` decimal(10,0)
+,`transmission_type` enum('mechanic','automatic')
+,`climat_type` enum('conditioner','climat_control')
+,`start_stop` bit(1)
+,`bluetooth` bit(1)
+,`gps` bit(1)
+,`lights_type` enum('halogen','xenon','LED')
+,`steer_wheel_heat` bit(1)
+,`seats_heat` bit(1)
+,`abs` bit(1)
+,`esp` bit(1)
+,`price` int(11)
+,`car_info` text
+,`colour` varchar(20)
+,`sold` bit(1)
+,`car_make_name` varchar(15)
+,`car_model_name` varchar(20)
+,`length` int(11)
+,`width` int(11)
+,`height` int(11)
+,`weight` int(11)
+,`car_model_info` text
+);
 
 -- --------------------------------------------------------
 
@@ -226,12 +283,12 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`username`, `password`, `name`, `surname`, `position`, `salary`, `birth_date`, `enroll_date`, `phone`, `email`) VALUES
-('a_andreev', 'aj763if8', 'Alex', 'Andreev', 'admin', 1500, '2000-05-29 21:00:00', '2020-04-14 21:00:00', '+380687593159', 'alandr@gmail.com'),
+('a_andreev', 'aj763if8', 'Alex', 'Andreev', 'admin', 1500, '2020-05-18 17:36:18', '2020-04-14 21:00:00', '+380687593159', 'alandr@gmail.com'),
 ('n_durov', '15akpo85', 'Nazar', 'Durov', 'mechanic', 1100, '1982-04-15 21:00:00', '2016-07-14 21:00:00', '+380661782396', 'nazdur@gmail.com'),
-('n_shemenev', 'o48hj9q3', 'Nickolai', 'Shemenev', '', 1500, '1995-06-24 21:00:00', '2017-03-14 22:00:00', '+380687593167', 'nickshem@gmail.com'),
+('n_shemenev', 'o48hj9q3', 'Nickolai', 'Shemenev', 'sales_manager', 1500, '2020-05-14 13:48:47', '2017-03-14 22:00:00', '+380687593167', 'nickshem@gmail.com'),
 ('o_mironov', 'o48hj9q3', 'Oleg', 'Mironov', 'supply_manager', 2700, '1990-07-18 21:00:00', '2015-07-27 21:00:00', '+380509472036', 'mironov@gmail.com'),
 ('s_kurkin', 'hd136yj7', 'Sergey', 'Kurkin', 'mechanic', 1250, '1970-11-12 22:00:00', '2017-11-24 22:00:00', '+380634775975', 'serkur@gmail.com'),
-('v_mihailov', 'sq26tj87', 'Viktor', 'Mihailov', '', 1300, '1985-10-22 21:00:00', '2018-08-16 21:00:00', '+380997348394', 'vikmih@gmail.com'),
+('v_mihailov', 'sq26tj87', 'Viktor', 'Mihailov', 'sales_manager', 1300, '2020-05-14 13:48:47', '2018-08-16 21:00:00', '+380997348394', 'vikmih@gmail.com'),
 ('v_nick', 'f97g531s', 'Vicktoriya', 'Nickolayeva', 'HR_manager', 2300, '1993-08-26 21:00:00', '2017-02-16 22:00:00', '+380504693145', 'vicknick@gmail.com');
 
 -- --------------------------------------------------------
@@ -305,14 +362,30 @@ INSERT INTO `factory` (`factory_id`, `country`, `city`, `car_make_id`) VALUES
 
 CREATE TABLE `repair_order` (
   `repair_order_id` int(11) NOT NULL,
-  `start` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `end` timestamp NOT NULL DEFAULT current_timestamp(),
+  `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `client_name` varchar(15) NOT NULL,
   `client_surname` varchar(15) NOT NULL,
   `client_phone` varchar(15) NOT NULL,
   `employee_username` varchar(15) NOT NULL,
-  `repair_order_info` text DEFAULT NULL
+  `repair_order_info` text DEFAULT NULL,
+  `car_model_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `repair_order`
+--
+
+INSERT INTO `repair_order` (`repair_order_id`, `time`, `client_name`, `client_surname`, `client_phone`, `employee_username`, `repair_order_info`, `car_model_id`) VALUES
+(1, '2020-05-17 12:30:00', 'Ivan', 'Ivanov', '+380999999999', 'n_durov', 'Problems with engine', 3),
+(2, '2020-05-18 09:30:00', 'Nickolay', 'Nickolaiev', '+380666666666', 's_kurkin', 'knocking in the suspension', 5),
+(4, '2020-05-24 14:30:00', 'Oleg', 'Olegov', '+38077777777777', 'n_durov', 'Oil leak', 7),
+(7, '2020-05-18 11:30:00', 'Nastya', 'Nastya', '+380664894127', 'n_durov', 'Problems', 3),
+(8, '2020-05-19 09:30:00', 'Vasya', 'Pupkin', '+380664894127', 'n_durov', 'Problems', 4),
+(9, '2020-05-19 09:30:00', 'Vasya', 'Pupkin', '+380664894127', 'n_durov', 'Problems', 5),
+(10, '2020-05-19 09:30:00', 'Vasya', 'Pupkin', '+380664894127', 'n_durov', 'Problems', 6),
+(11, '0000-00-00 00:00:00', 'Added', 'Report', '+380649436712', 'n_durov', 'Order added from app', 5),
+(12, '0000-00-00 00:00:00', 'Second', 'Added', '+380852314965', 'n_durov', 'Second added from app', 2),
+(13, '2020-05-23 05:30:00', 'Third', 'Added', '+380649436712', 'n_durov', 'Third added in the app', 1);
 
 -- --------------------------------------------------------
 
@@ -327,6 +400,36 @@ CREATE TABLE `repair_report` (
   `employee_username` varchar(15) NOT NULL,
   `repair_info` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `repair_report`
+--
+
+INSERT INTO `repair_report` (`repair_id`, `vin`, `repair_date`, `employee_username`, `repair_info`) VALUES
+(1, 1417817985, '2020-05-18 14:43:59', 'n_durov', 'Break liquid changed'),
+(2, 1417817985, '2020-05-18 14:44:08', 'n_durov', 'Break liquid changed'),
+(3, 1417817985, '2020-05-18 14:45:17', 'n_durov', 'Break liquid changed'),
+(4, 1417817985, '2020-05-18 15:04:40', 'n_durov', 'Second fix'),
+(5, 1417817985, '2020-05-18 15:04:49', 'n_durov', 'Second fix'),
+(6, 1417139952, '2020-05-18 15:13:33', 'n_durov', 'Third fx');
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `rep_ord_info`
+-- (См. Ниже фактическое представление)
+--
+CREATE TABLE `rep_ord_info` (
+`id` int(11)
+,`client_phone` varchar(15)
+,`client_name` varchar(31)
+,`mechanic` varchar(15)
+,`make` varchar(15)
+,`model` varchar(20)
+,`date` date
+,`time` time
+,`info` text
+);
 
 -- --------------------------------------------------------
 
@@ -343,6 +446,88 @@ CREATE TABLE `sell_order` (
   `employee_username` varchar(15) NOT NULL,
   `sell_order_info` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Дамп данных таблицы `sell_order`
+--
+
+INSERT INTO `sell_order` (`sell_order_id`, `vin`, `client_name`, `client_surname`, `client_phone`, `employee_username`, `sell_order_info`) VALUES
+(1, 1417139852, 'Viktor', 'Kadyrov', '+380111111111', 'n_shemenev', '500$ discount'),
+(2, 1417139952, 'Alexey', 'Putin', '+380123456789', 'v_mihailov', '+ winter tires'),
+(4, 1417862198, 'Anastasiya', 'Korobova', '+380899705632', 'v_mihailov', ''),
+(6, 1417865140, 'Nazar', 'Vekovoi', '+380799657715', 'v_mihailov', ''),
+(7, 1417867591, 'Olga', 'Kyrychenko', '+380706616901', 'n_shemenev', ''),
+(8, 1417869436, 'Vika', 'Mikhaylova', '+380725125404', 'v_mihailov', ''),
+(9, 9877867591, 'Albers', 'Einstein', '+380111111111', 'n_shemenev', 'Discount for great brain');
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `sell_ord_info`
+-- (См. Ниже фактическое представление)
+--
+CREATE TABLE `sell_ord_info` (
+`id` int(11)
+,`vin` bigint(11)
+,`make` varchar(15)
+,`model` varchar(20)
+,`price` int(11)
+,`client_name` varchar(31)
+,`client_phone` varchar(15)
+,`employee_username` varchar(15)
+,`info` text
+);
+
+-- --------------------------------------------------------
+
+--
+-- Дублирующая структура для представления `supplies_info`
+-- (См. Ниже фактическое представление)
+--
+CREATE TABLE `supplies_info` (
+`id` int(11)
+,`make` varchar(15)
+,`country` varchar(15)
+,`city` varchar(20)
+,`expected_arrival_date` date
+,`status` enum('waiting for delivery','on the way','delivered')
+);
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `car_info`
+--
+DROP TABLE IF EXISTS `car_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `car_info`  AS  select `car`.`vin` AS `vin`,`car`.`del_lot_id` AS `del_lot_id`,`car`.`equip_id` AS `equip_id`,`car`.`car_model_id` AS `car_model_id`,`car`.`engine_vol` AS `engine_vol`,`car`.`engine_power` AS `engine_power`,`car`.`mixed_fuel_consumption` AS `mixed_fuel_consumption`,`car`.`transmission_type` AS `transmission_type`,`car`.`climat_type` AS `climat_type`,`car`.`start_stop` AS `start_stop`,`car`.`bluetooth` AS `bluetooth`,`car`.`gps` AS `gps`,`car`.`lights_type` AS `lights_type`,`car`.`steer_wheel_heat` AS `steer_wheel_heat`,`car`.`seats_heat` AS `seats_heat`,`car`.`abs` AS `abs`,`car`.`esp` AS `esp`,`car`.`price` AS `price`,`car`.`car_info` AS `car_info`,`car`.`colour` AS `colour`,`car`.`sold` AS `sold`,`car_make`.`car_make_name` AS `car_make_name`,`car_model`.`car_model_name` AS `car_model_name`,`car_model`.`length` AS `length`,`car_model`.`width` AS `width`,`car_model`.`height` AS `height`,`car_model`.`weight` AS `weight`,`car_model`.`car_model_info` AS `car_model_info` from ((`car` join `car_model`) join `car_make`) where `car`.`car_model_id` = `car_model`.`car_model_id` and `car_model`.`car_make_id` = `car_make`.`car_make_id` order by `car`.`car_model_id` ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `rep_ord_info`
+--
+DROP TABLE IF EXISTS `rep_ord_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `rep_ord_info`  AS  select `repair_order`.`repair_order_id` AS `id`,`repair_order`.`client_phone` AS `client_phone`,concat(`repair_order`.`client_name`,' ',`repair_order`.`client_surname`) AS `client_name`,`repair_order`.`employee_username` AS `mechanic`,`car_make`.`car_make_name` AS `make`,`car_model`.`car_model_name` AS `model`,cast(`repair_order`.`time` as date) AS `date`,cast(`repair_order`.`time` as time) AS `time`,`repair_order`.`repair_order_info` AS `info` from ((`repair_order` join `car_make`) join `car_model`) where `car_model`.`car_model_id` = `repair_order`.`car_model_id` and `car_make`.`car_make_id` = `car_model`.`car_make_id` ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `sell_ord_info`
+--
+DROP TABLE IF EXISTS `sell_ord_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `sell_ord_info`  AS  select `sell_order`.`sell_order_id` AS `id`,`sell_order`.`vin` AS `vin`,`car_make`.`car_make_name` AS `make`,`car_model`.`car_model_name` AS `model`,`car`.`price` AS `price`,concat(`sell_order`.`client_name`,' ',`sell_order`.`client_surname`) AS `client_name`,`sell_order`.`client_phone` AS `client_phone`,`sell_order`.`employee_username` AS `employee_username`,`sell_order`.`sell_order_info` AS `info` from (((`sell_order` join `car`) join `car_make`) join `car_model`) where `sell_order`.`vin` = `car`.`vin` and `car`.`car_model_id` = `car_model`.`car_model_id` and `car_model`.`car_make_id` = `car_make`.`car_make_id` ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура для представления `supplies_info`
+--
+DROP TABLE IF EXISTS `supplies_info`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `supplies_info`  AS  select `delivery_lot`.`del_lot_id` AS `id`,`car_make`.`car_make_name` AS `make`,`factory`.`country` AS `country`,`factory`.`city` AS `city`,cast(`delivery_lot`.`expected_arrival_date` as date) AS `expected_arrival_date`,`delivery_lot`.`status` AS `status` from ((`car_make` join `factory`) join `delivery_lot`) where `delivery_lot`.`factory_id` = `factory`.`factory_id` and `factory`.`car_make_id` = `car_make`.`car_make_id` ;
 
 --
 -- Индексы сохранённых таблиц
@@ -402,7 +587,8 @@ ALTER TABLE `factory`
 --
 ALTER TABLE `repair_order`
   ADD PRIMARY KEY (`repair_order_id`),
-  ADD KEY `employee_username` (`employee_username`);
+  ADD KEY `employee_username` (`employee_username`),
+  ADD KEY `car_model_id` (`car_model_id`);
 
 --
 -- Индексы таблицы `repair_report`
@@ -457,19 +643,19 @@ ALTER TABLE `factory`
 -- AUTO_INCREMENT для таблицы `repair_order`
 --
 ALTER TABLE `repair_order`
-  MODIFY `repair_order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `repair_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `repair_report`
 --
 ALTER TABLE `repair_report`
-  MODIFY `repair_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `repair_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `sell_order`
 --
 ALTER TABLE `sell_order`
-  MODIFY `sell_order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `sell_order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
@@ -511,7 +697,8 @@ ALTER TABLE `factory`
 -- Ограничения внешнего ключа таблицы `repair_order`
 --
 ALTER TABLE `repair_order`
-  ADD CONSTRAINT `repair_order_ibfk_1` FOREIGN KEY (`employee_username`) REFERENCES `employee` (`username`);
+  ADD CONSTRAINT `repair_order_ibfk_1` FOREIGN KEY (`employee_username`) REFERENCES `employee` (`username`),
+  ADD CONSTRAINT `repair_order_ibfk_2` FOREIGN KEY (`car_model_id`) REFERENCES `car_model` (`car_model_id`);
 
 --
 -- Ограничения внешнего ключа таблицы `repair_report`
